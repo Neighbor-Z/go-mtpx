@@ -572,7 +572,8 @@ func processDownloadFilesError(dfProps *processDownloadFilesProps, err error) (b
 func restoreLocalFileTimestamp(destination string, modTime time.Time) (err error) {
 	currentTime := time.Now().Local()
 
-	err = os.Chtimes(destination, currentTime, modTime.Local())
+	// MTP decoding already resolved the device's time zone. Preserve the instant.
+	err = os.Chtimes(destination, currentTime, modTime)
 	if err != nil {
 		return err
 	}
